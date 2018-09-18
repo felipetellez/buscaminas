@@ -72,14 +72,6 @@ public class Celda {
     public void marcar(){
         this.bandera = true;
     }
-   
-    
-    
-    
-    
-    
 
-    
-   
     
 }

@@ -188,6 +188,7 @@ public final class Tablero {
                     tableroDeCeldas[i][j].setValor(String.valueOf(this.contador_minas_alrededor(i,j)));
                     
                 }    
+                
             }          
         }
     }
