@@ -20,7 +20,6 @@ public class Buscaminas {
     public static void main(String[] args) {
         
         try{
-            
             System.out.println("Bienvenido a Buscaminas");
 
             Scanner entrada = new Scanner(System.in);

@@ -186,7 +186,6 @@ public final class Tablero {
                 //Si no es una mina, cuento las minas alrededor y le asigno un valor.
                 if(tableroDeCeldas[i][j].es_mina() == false){ 
                     tableroDeCeldas[i][j].setValor(String.valueOf(this.contador_minas_alrededor(i,j)));
-                    
                 }    
                 
             }          

@@ -56,7 +56,6 @@ public class Celda {
         this.bandera = true;
     }
 
-  
     public void setValor(String valor) {
         this.valor = valor;
     }
@@ -73,5 +72,4 @@ public class Celda {
         this.bandera = true;
     }
 
-    
 }
