@@ -10,32 +10,76 @@ package buscaminas;
  * @author felipetellezdj
  */
 public class Celda {
-    boolean hay_mina, hay_bandera;
-    boolean estado = false;
+    
+    boolean cubierta;
+    boolean bandera;
+    String valor;
+  
+    public Celda() {
+        this.valor = ".";
+        boolean cubierta = true;
+        boolean bandera = false;
+    }
+     
 
-    public boolean isHay_mina() {
-        return hay_mina;
+    public String getValor() {
+        return valor;
     }
 
-    public boolean isHay_bandera() {
-        return hay_bandera;
+     
+    public boolean isBandera() {
+        boolean es_bandera = false;
+        if(this.valor.equalsIgnoreCase("P")){
+            es_bandera = true;
+        }
+        return es_bandera;
+    }
+    
+    public boolean es_mina() {
+        boolean es_mina = false;
+        if(this.valor.equalsIgnoreCase("*")){
+            es_mina = true;
+        }
+        return es_mina;
     }
 
-    public boolean isEstado() {
-        return estado;
+    public boolean isCubierta() {
+        return cubierta;
     }
 
-    public void setHay_mina(boolean hay_mina) {
-        this.hay_mina = hay_mina;
+    public void setMina() {
+        this.valor = "*";
     }
 
-    public void setHay_bandera(boolean hay_bandera) {
-        this.hay_bandera = hay_bandera;
+    public void setBandera(boolean bandera) {
+        
+        this.bandera = true;
     }
 
-    public void setEstado(boolean estado) {
-        this.estado = estado;
+  
+    public void setValor(String valor) {
+        this.valor = valor;
     }
+    
+     public void setCubierta(boolean cubierta) {
+        this.cubierta = cubierta;
+    }
+    
+    public void mostrar(){
+        this.cubierta = false;
+    }
+    
+    public void marcar(){
+        this.bandera = true;
+    }
+   
+    
+    
+    
+    
+    
+
+    
    
     
 }
