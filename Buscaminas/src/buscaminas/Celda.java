@@ -6,57 +6,53 @@
 package buscaminas;
 
 /**
- *
+ * Clase que se encaga del manejo de atributos y metodos de cada celda del juego
  * @author felipetellezdj
  */
 public class Celda {
     
     boolean cubierta;
     boolean bandera;
-    String valor;
+    boolean mina;
+    int valor;
   
     public Celda() {
-        this.valor = ".";
-        boolean cubierta = true;
-        boolean bandera = false;
+        
+        //ATRIBUTOS
+        this.cubierta = true;
+        this.bandera = false;
     }
      
-
-    public String getValor() {
+    //Metodos get 
+    public int getValor() {
         return valor;
     }
 
-     
     public boolean isBandera() {
-        boolean es_bandera = false;
-        if(this.valor.equalsIgnoreCase("P")){
-            es_bandera = true;
-        }
-        return es_bandera;
-    }
-    
-    public boolean es_mina() {
-        boolean es_mina = false;
-        if(this.valor.equalsIgnoreCase("*")){
-            es_mina = true;
-        }
-        return es_mina;
+        return bandera;
     }
 
+    public boolean isMina() {
+        return mina;
+    }
+  
+   
     public boolean isCubierta() {
         return cubierta;
     }
 
-    public void setMina() {
-        this.valor = "*";
+    //Metodos set
+    public void setMina(boolean mina) {
+        this.mina = mina;
     }
 
+   
     public void setBandera(boolean bandera) {
         
         this.bandera = true;
     }
 
-    public void setValor(String valor) {
+    public void setValor(int valor) {
         this.valor = valor;
     }
     
@@ -64,10 +60,16 @@ public class Celda {
         this.cubierta = cubierta;
     }
     
+    /**
+     * Metodo que asigna el atributo cubierta false para poder mostrar la celda
+     */
     public void mostrar(){
         this.cubierta = false;
     }
     
+    /**
+     * Metodo que asigna al atributo bandera true para indicar que la celda esta marcada con una bandera
+     */
     public void marcar(){
         this.bandera = true;
     }

@@ -5,10 +5,12 @@
  */
 package buscaminas;
 
+import static java.lang.Integer.max;
+import static java.lang.Integer.min;
 import java.util.EmptyStackException;
 
 /**
- * Clase que maneja los elementos los objetos Celda del tablero del juego de buscaminas
+ * Clase que maneja los elementos Celda del tablero del juego de buscaminas y todos los metodos correspondietes al juego
  * @author felipetellezdj
  */
 public final class Tablero {
@@ -132,18 +134,18 @@ public final class Tablero {
         for (int i = 0; i < tableroDeCeldas.length; i++) {
 
             for (int j = 0; j < tableroDeCeldas[i].length ; j++) {
-                if(tableroDeCeldas[i][j].isCubierta() == true){
-                    if(tableroDeCeldas[i][j].isBandera() == true){
+                if(tableroDeCeldas[i][j].isCubierta()){
+                    if(tableroDeCeldas[i][j].isBandera()){
                         System.out.print("P ");
                     }
                     else{
-                        System.out.println(". ");
+                        System.out.print(". ");
                     }
                 }
-                else if(tableroDeCeldas[i][j].getValor().equalsIgnoreCase("0")){
+                else if(tableroDeCeldas[i][j].getValor() == 0){
                         System.out.print("0 ");
                     }
-                    else if(tableroDeCeldas[i][j].getValor().equalsIgnoreCase("*")){
+                    else if(tableroDeCeldas[i][j].isMina()){
                             System.out.print("* ");
                         }
                         else{
@@ -163,64 +165,26 @@ public final class Tablero {
         for (int mina = 0; mina < this.minas; mina++) {
             //creo unas variables que me serviran de coordenadas para saber donde colocare las minas
             int coordenada_x, coordenada_y;
-          
-            coordenada_x = (int) (Math.random()* this.columnas)  ;
-            coordenada_y = (int) (Math.random()* this.filas) ;
-
-            
-            if( !tableroDeCeldas[coordenada_y][coordenada_x].es_mina() && !tableroDeCeldas[filas -1][columnas - 1].es_mina() ) {
-		//Si el punto aleatorio no es mina NI el punto entregado como argumento.
-		tableroDeCeldas[coordenada_y][coordenada_x].setMina();
-			
-            }
-        }
-    }
-    
-    /**
-     * Asigna los números del 1-8 que van en el tablero y que indican el número de minas que hay alrededor de una celda
-     */
-    public void asignar_num_minas_alrededor(){
-        for (int i = 0; i < this.tableroDeCeldas.length; i++) {
-            for (int j = 0; j < this.tableroDeCeldas[i].length; j++) {
-                //Si la celda actual es una mina no es necesario asignarle un valor
-                //Si no es una mina, cuento las minas alrededor y le asigno un valor.
-                if(tableroDeCeldas[i][j].es_mina() == false){ 
-                    tableroDeCeldas[i][j].setValor(String.valueOf(this.contador_minas_alrededor(i,j)));
-                }    
+         
+            do{
+                coordenada_x = (int) (Math.random()* this.columnas)  ;
+                coordenada_y = (int) (Math.random()* this.filas) ;
+            }while(tableroDeCeldas[coordenada_y][coordenada_x].isMina());
                 
-            }          
-        }
-    }
-    
-    /**
-     * Metodo que cuenta el número de minas alrededor de una celda
-     * @param coord_x
-     * @param coord_y
-     * @return int numero de minas alrededor de una celda
-     */
-    public int contador_minas_alrededor(int coord_y, int coord_x){
-        
-        
-        //Verifico que las coordenadas pertenecan al tablero
-       
-            if(!es_valido(coord_y, coord_x)){
-                System.err.println("coordenada por fuera del rango");
-            }
+            tableroDeCeldas[coordenada_y][coordenada_x].setMina(true);
             
-            int contador = 0;
-            for (int coordenada_y = coord_y-1; coordenada_y <= coord_x+1; coordenada_y++) {
-                for (int coordenada_x = coord_x-1; coordenada_x <= coord_x+1; coordenada_x++) {
-                    if(es_valido(coord_y, coord_x) && tableroDeCeldas[coord_y][coord_x].es_mina()){
-                        contador++;
+            //Recorre el contorno de la bomba e incrementa los contadores
+            for (int f2 = max(0, coordenada_y-1);f2 < min(tableroDeCeldas.length,coordenada_y+2) ; f2++){
+                for (int c2 = max(0,coordenada_x-1);c2 < min(tableroDeCeldas[0].length,coordenada_y+2); c2++){
+                    if (!tableroDeCeldas[f2][c2].isMina()){ //Si no es bomba
+                        tableroDeCeldas[f2][c2].valor++;
                     }
-                        
                 }
             }
-     
-         return contador;
-        
+        }
     }
     
+   
     /**
      * Metodo que devuelve true si el punto está dentro del tablero y false si no lo está
      * @param coord_x
@@ -232,18 +196,18 @@ public final class Tablero {
     }
     
     /**
-     * Metodo recursivo que revisa si una celda esta "vacia" y la deshabilita. Ademas revisa si las que lo rodean igualmente estan vacias y asi sucesivamente
+     * Metodo recursivo que revisa si una celda esta "vacia" la deshabilita. Ademas revisa si las que lo rodean igualmente estan vacias y asi sucesivamente
      * @param x
      * @param y
      */
     public void mostrar_cuadros_deshabilitados(int y, int x) {
 
-	if(es_valido(y, x) && tableroDeCeldas[y][x].getValor().equalsIgnoreCase("0") && tableroDeCeldas[y][x].isCubierta()) {
+	if(es_valido(y, x) && tableroDeCeldas[y][x].getValor() == 0 && tableroDeCeldas[y][x].isCubierta() &&  !tableroDeCeldas[y][x].isMina() ) {
 		tableroDeCeldas[y][x].mostrar();
 		for(int coord_y = y-1; coord_y <= y+1; coord_y++){
 			for(int coord_x = x-1; coord_x <= x+1; coord_x++) {
 			//Con estos dos for puedo moverme por los 8 cuadrados circundantes
-				if(es_valido(coord_y, coord_x) && Integer.parseInt(tableroDeCeldas[coord_y][coord_x].getValor())> 0 && !tableroDeCeldas[y][x].es_mina()){
+				if(es_valido(coord_y, coord_x) && tableroDeCeldas[coord_y][coord_x].getValor() > 0 && !tableroDeCeldas[y][x].isMina()){
                                     //Muestro los números que hayan
                                     tableroDeCeldas[coord_y][coord_x].mostrar();
                                 }
@@ -264,7 +228,7 @@ public final class Tablero {
        
         for (int y = 0; y < tableroDeCeldas.length; y++) {
             for (int x = 0; x < tableroDeCeldas[y].length; x++) {
-                if (tableroDeCeldas[y][x].isCubierta() && tableroDeCeldas[y][x].es_mina()){
+                if (tableroDeCeldas[y][x].isCubierta() && tableroDeCeldas[y][x].isMina()){
                     celdasMostradas++;
                 }
                 
@@ -283,13 +247,13 @@ public final class Tablero {
         if (es_valido(coord_y, coord_x)){
             if(primera_eleccion){
                 this.generar_minas();
-                this.asignar_num_minas_alrededor();
                 primera_eleccion = false;
             }
             
-            if(tableroDeCeldas[coord_y][coord_x].getValor().equalsIgnoreCase("0")){
+            if(tableroDeCeldas[coord_y][coord_x].getValor() == 0){
                 //Condicion si la celda elegida está vacía (sin minas ni números)
                 mostrar_cuadros_deshabilitados(coord_y,coord_x);
+              
             }
             else{
                 //Condicion si la celda elegida contiene un número o una mina
@@ -305,6 +269,15 @@ public final class Tablero {
    
     }
     
+    public void seleccionar_celda(int coord_y, int coord_x){
+        for (int f2 = max(0, coord_y-1);f2 < min(tableroDeCeldas.length,coord_y+2);f2++){
+                        for (int c2 = max(0,coord_x-1);c2 < min(tableroDeCeldas[0].length,coord_x+2);c2++){
+                            seleccionar_celda(f2, c2);
+                        }
+                    }
+    }
+    
+    
     /**
      * Metodo que marca todas las minas que no estén marcadas. Así, cuando el usuario gana las puede ver en el tablero.
      */
@@ -312,7 +285,7 @@ public final class Tablero {
 
 	for(int i = 0; i < tableroDeCeldas.length; i++){
             for(int j = 0; j < tableroDeCeldas[i].length; j++){
-			if( tableroDeCeldas[i][j].es_mina()){
+			if( tableroDeCeldas[i][j].isMina()){
                             tableroDeCeldas[i][j].marcar();
                         }
             }

@@ -35,13 +35,13 @@ public class Buscaminas {
 
             Tablero tablero = new Tablero(filas_ingresadas, columnas_ingresados, minas_ingresadas);
             tablero.asignar_tamaño_tablero();
-
-
+            
             boolean juego_loop = true, victoria = false;
 
             while(juego_loop ==true && victoria == false){
+                System.out.print("\n");
                 tablero.imprimir_tablaro(); 
-                System.out.print("Ingrese su jugada fila, columna ,jugada. Jugada puede ser U para descubrir celda o M para marcar con bandera \n");
+                System.out.print("Ingrese su jugada-> fila columna opcion. Opcion puede ser U para descubrir celda o M para marcar con bandera \n");
 
                 String jugada_ingresada = entrada.nextLine();
                 String[] jugada_ingresada_separada = jugada_ingresada.split(" ");
@@ -56,7 +56,7 @@ public class Buscaminas {
                 else {
                     tablero.escoger_celda(coord_y_jugada-1, coord_x_jugada-1);
 
-                    if(tablero.es_valido(coord_y_jugada-1, coord_x_jugada-1) && tablero.tableroDeCeldas[coord_y_jugada-1][coord_x_jugada-1].es_mina()){
+                    if(tablero.es_valido(coord_y_jugada-1, coord_x_jugada-1) && tablero.tableroDeCeldas[coord_y_jugada-1][coord_x_jugada-1].isMina()){
                         juego_loop = false;
                     }
                     
